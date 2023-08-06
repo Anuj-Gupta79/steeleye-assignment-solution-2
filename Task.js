@@ -30,19 +30,13 @@ function highlightHTMLContent(htmlContent, plainText, plainTextPositions) {
     return "Type of plainTextPositions is invalid :(";
   }
 
-  // htmlContent can't be empty
-  if (htmlContent.length === 0) {
-    return "htmlContent is empty :(";
-  }
-
-  // plainText can't be empty
-  if (plainText.length === 0) {
-    return "plainText is empty :(";
-  }
-
-  // plainTextPositions can't be empty
-  if (plainTextPositions.length === 0) {
-    return "Positions for the plain text is not given :(";
+  // if htmlContent, plainText and plainTextPositions are empty, return the original htmlContent
+  if (
+    htmlContent.length === 0 ||
+    plainText.length === 0 ||
+    plainTextPositions.length === 0
+  ) {
+    return htmlContent;
   }
 
   const startTag = "<mark>";
@@ -60,16 +54,17 @@ function highlightHTMLContent(htmlContent, plainText, plainTextPositions) {
     }
 
     const word = plainText.slice(startIndex, endIndex);
-    const wordStartIndex = htmlContent.indexOf(word);
+    const wordStartIndex = htmlContent.indexOf(word, startIndex);
     const wordEndIndex = wordStartIndex + word.length;
 
-
-    htmlContent =
-      htmlContent.slice(0, wordStartIndex) +
-      startTag +
-      htmlContent.slice(wordStartIndex, wordEndIndex) +
-      endTag +
-      htmlContent.slice(wordEndIndex);
+    if (wordStartIndex != -1 && wordEndIndex != -1) {
+      htmlContent =
+        htmlContent.slice(0, wordStartIndex) +
+        startTag +
+        htmlContent.slice(wordStartIndex, wordEndIndex) +
+        endTag +
+        htmlContent.slice(wordEndIndex);
+    } else return htmlContent;
   }
 
   return htmlContent;
@@ -92,7 +87,6 @@ const plainTextPositions = [
     end: 525,
   },
 ];
-
 
 const result = highlightHTMLContent(htmlContent, plainText, plainTextPositions);
 console.log(result);

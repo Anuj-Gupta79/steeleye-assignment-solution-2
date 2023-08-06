@@ -63,6 +63,7 @@ function highlightHTMLContent(htmlContent, plainText, plainTextPositions) {
     const wordStartIndex = htmlContent.indexOf(word);
     const wordEndIndex = wordStartIndex + word.length;
 
+
     htmlContent =
       htmlContent.slice(0, wordStartIndex) +
       startTag +
@@ -92,5 +93,8 @@ const plainTextPositions = [
   },
 ];
 
+
 const result = highlightHTMLContent(htmlContent, plainText, plainTextPositions);
 console.log(result);
+
+module.exports = highlightHTMLContent;
